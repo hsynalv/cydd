@@ -12,8 +12,8 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'gizli-anahtar-123')
 
 # MongoDB bağlantısı
-client = MongoClient(os.getenv('MONGODB_URI', 'mongodb://localhost:27017/'))
-db = client['user_info_system']
+client = MongoClient('mongodb://backendUser:horiar5732ai@18.195.19.251:27017/test?authSource=horiar')
+db = client['test']
 users_collection = db['users']
 admin_collection = db['admin_users']
 
