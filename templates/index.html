@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Bilgi Formu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.15);
+            border-color: #86b7fe;
+        }
+        .btn-primary {
+            border-radius: 10px;
+            padding: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33,150,243,0.3);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        .page-title {
+            color: #1976D2;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .input-group-text {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px 0 0 10px;
+        }
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+        .form-floating > .form-control {
+            height: calc(3.5rem + 2px);
+            padding: 1rem 0.75rem;
+        }
+        .form-floating > label {
+            padding: 1rem 0.75rem;
+        }
+        .photo-preview {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            display: none;
+            margin-top: 1rem;
+        }
+        .custom-file-upload {
+            border: 2px dashed #2196F3;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .custom-file-upload:hover {
+            background: rgba(33,150,243,0.05);
+        }
+        .custom-file-upload i {
+            font-size: 2rem;
+            color: #2196F3;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="page-title">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Kullanıcı Bilgi Formu
+                        </h2>
+                        
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <form action="{{ url_for('submit') }}" method="POST" enctype="multipart/form-data">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Ad Soyad" required>
+                                <label for="full_name"><i class="fas fa-user me-2"></i>Ad Soyad</label>
+                            </div>
+                            
+                            <div class="form-floating mb-3">
+                                <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" placeholder="5XX XXX XX XX" required>
+                                <label for="phone"><i class="fas fa-phone me-2"></i>Telefon Numarası</label>
+                                <small class="form-text text-muted">Örnek: 5XX XXX XX XX</small>
+                            </div>
+                            
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="instagram" name="instagram" placeholder="Instagram Hesabı">
+                                <label for="instagram"><i class="fab fa-instagram me-2"></i>Instagram Hesabı (Opsiyonel)</label>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="form-label"><i class="fas fa-camera me-2"></i>Fotoğraf</label>
+                                <div class="custom-file-upload" onclick="document.getElementById('photo').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p class="mb-0">Fotoğraf yüklemek için tıklayın veya sürükleyin</p>
+                                    <input type="file" class="d-none" id="photo" name="photo" accept="image/*" required onchange="previewImage(this)">
+                                </div>
+                                <img id="preview" class="photo-preview" alt="Fotoğraf önizleme">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Gönder
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('preview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html> 
