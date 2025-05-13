@@ -30,7 +30,8 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    basvuru_tamamlandi = request.args.get('basvuru_tamamlandi')
+    return render_template('index.html', basvuru_tamamlandi=basvuru_tamamlandi)
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -58,8 +59,8 @@ def submit():
         }
         
         users_collection.insert_one(user_data)
-        flash('Bilgileriniz başarıyla kaydedildi!')
-        return redirect(url_for('index'))
+        flash("Başvurunuz alınmıştır. Teşekkür ederiz!")
+        return redirect(url_for('index', basvuru_tamamlandi=1))
     
     flash('Geçersiz dosya formatı')
     return redirect(url_for('index'))

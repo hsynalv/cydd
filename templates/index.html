@@ -103,59 +103,89 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="page-title">
-                            <i class="fas fa-user-plus me-2"></i>
-                            Kullanıcı Bilgi Formu
-                        </h2>
-                        
-                        {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        {{ message }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-
-                        <form action="{{ url_for('submit') }}" method="POST" enctype="multipart/form-data">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Ad Soyad" required>
-                                <label for="full_name"><i class="fas fa-user me-2"></i>Ad Soyad</label>
+                {% if basvuru_tamamlandi %}
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="text-center mb-3">
+                                <img src="{{ url_for('static', filename='logo.png') }}" alt="ÇYDD Logo" style="max-width: 120px; height: auto;">
                             </div>
-                            
-                            <div class="form-floating mb-3">
-                                <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" placeholder="5XX XXX XX XX" required>
-                                <label for="phone"><i class="fas fa-phone me-2"></i>Telefon Numarası</label>
-                                <small class="form-text text-muted">Örnek: 5XX XXX XX XX</small>
+                            <h2 class="page-title">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Başvurunuz Alınmıştır
+                            </h2>
+                            <div class="alert alert-success mt-4">
+                                <i class="fas fa-thumbs-up me-2"></i>
+                                Başvurunuz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz. Teşekkür ederiz!
                             </div>
-                            
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="instagram" name="instagram" placeholder="Instagram Hesabı">
-                                <label for="instagram"><i class="fab fa-instagram me-2"></i>Instagram Hesabı (Opsiyonel)</label>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label"><i class="fas fa-camera me-2"></i>Fotoğraf</label>
-                                <div class="custom-file-upload" onclick="document.getElementById('photo').click()">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <p class="mb-0">Fotoğraf yüklemek için tıklayın veya sürükleyin</p>
-                                    <input type="file" class="d-none" id="photo" name="photo" accept="image/*" required onchange="previewImage(this)">
-                                </div>
-                                <img id="preview" class="photo-preview" alt="Fotoğraf önizleme">
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-paper-plane me-2"></i>
-                                Gönder
-                            </button>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                {% else %}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <img src="{{ url_for('static', filename='logo.png') }}" alt="ÇYDD Logo" style="max-width: 120px; height: auto;">
+                            </div>
+                            <h2 class="page-title">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Kullanıcı Bilgi Formu
+                            </h2>
+                            
+                            <div class="alert alert-info mb-4">
+                                <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Katılım Şartları</h5>
+                                <p class="mb-0">Formu doldurmadan önce lütfen aşağıdaki şartları yerine getirdiğinizden emin olun:</p>
+                                <ul class="mb-0 mt-2">
+                                    <li><a href="https://www.instagram.com/cydd.19mayis/" target="_blank" class="text-decoration-none">Instagram hesabımızı</a> takip etmek</li>
+                                    <li>Formu eksiksiz doldurmak</li>
+                                </ul>
+                            </div>
+                            
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            {{ message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <form action="{{ url_for('submit') }}" method="POST" enctype="multipart/form-data">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Ad Soyad" required>
+                                    <label for="full_name"><i class="fas fa-user me-2"></i>Ad Soyad</label>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" placeholder="5XX XXX XX XX" required>
+                                    <label for="phone"><i class="fas fa-phone me-2"></i>Telefon Numarası</label>
+                                    <small class="form-text text-muted">Örnek: 5XX XXX XX XX</small>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="instagram" name="instagram" placeholder="Instagram Hesabı">
+                                    <label for="instagram"><i class="fab fa-instagram me-2"></i>Instagram Hesabı</label>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label"><i class="fas fa-camera me-2"></i>Fotoğraf</label>
+                                    <div class="custom-file-upload" onclick="document.getElementById('photo').click()">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p class="mb-0">Fotoğraf yüklemek için tıklayın veya sürükleyin</p>
+                                        <input type="file" class="d-none" id="photo" name="photo" accept="image/*" required onchange="previewImage(this)">
+                                    </div>
+                                    <img id="preview" class="photo-preview" alt="Fotoğraf önizleme">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Gönder
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
